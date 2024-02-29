@@ -14,52 +14,54 @@ import Select from '../formsUi/Select'
 import ButtonWrapper from '../formsUi/Button'
 import batteryCategoryOptions from '../../data/batteryCategoryOptions.json'
 import statusOptions from '../../data/statusOptions.json'
+import warrantyOptions from '../../data/warrantyOptions.json'
+import axios from 'axios'
 interface FormValues{
-    bcategory:string;
-    partno:string;
-    spartno:string;
-    batteryAh:string;
-    dprice:string;
+    cat_id:string;
+    part_no:string;
+    short_part_no:string;
+    ah:string;
+    dlr_price:string;
     mrp:string;
-    year:string;
-    pstatus:string;
+    wnty_cat_id:string;
+    p_status:string;
 }
 
 const initialValues: FormValues = {
-    bcategory:'',
-    partno:'',
-    spartno:'',
-    batteryAh:'',
-    dprice:'',
+    cat_id:'',
+    part_no:'',
+    short_part_no:'',
+    ah:'',
+    dlr_price:'',
     mrp:'',
-    year:'',
-    pstatus:'',
+    wnty_cat_id:'',
+    p_status:'',
 }
 
 const validationSchema = Yup.object().shape({
-    bcategory : Yup.string()
-        .required("Battery Category Needed"),
-    partno: Yup.string()
-        .required("Part No Needed"),
-    spartno: Yup.string()
-        .required("Short Part No Needed"),
-    batteryAh: Yup.string()
-        .required("Battery AH Needed"),
-    dprice: Yup.number()
-        .required("Price is Required")
-        .typeError("Please enter valid price"),
-    mrp: Yup.number()
-        .required("Price is Required")
-        .typeError("Please enter valid price"),
-    year: Yup.string()
-        .required("Warranty Year Required"),
-    pstatus: Yup.string()
-        .required("Status is Required")
+    cat_id : Yup.string()
+    .required("Battery Category Needed"),
+ part_no: Yup.string()
+    .required("Part No Needed"),
+ short_part_no: Yup.string()
+    .required("Short Part No Needed"),
+ah: Yup.string()
+    .required("Battery AH Needed"),
+dlr_price: Yup.number()
+    .required("Price is Required")
+    .typeError("Please enter valid price"),
+mrp: Yup.number()
+    .required("Price is Required")
+    .typeError("Please enter valid price"),
+wnty_cat_id: Yup.string()
+    .required("Warranty Year Required"),
+ p_status: Yup.string()
+    .required("Status is Required")
 })
 
 const ProductAdd: FC<FormValues> = () => {
     const [open, setOpen] = useState<boolean>(false);
-    
+     const [user,setUser] =  useState(initialValues);
     return (
         <React.Fragment>
         <Button variant="solid" color="primary" onClick={() => setOpen(true)}style={{width:150}} startDecorator={<Add />}>
@@ -97,8 +99,19 @@ const ProductAdd: FC<FormValues> = () => {
                 </Typography>
                 <Formik 
                     initialValues={initialValues}
-                    onSubmit={values => {
-                        console.log(JSON.stringify(values))
+                    onSubmit={ async values => {
+
+                        try {
+                            await axios.post('http://localhost:5172/product_smit', values);
+                            console.log('Form submitted successfully');
+                             
+                        } catch (error) {
+                            console.error('Error submitting form', error);
+                            console.error({values});
+                        }
+                     
+                       setUser(initialValues);
+                        // console.log(JSON.stringify(values))
                     }}
                     validationSchema={validationSchema}
                 >
@@ -106,31 +119,31 @@ const ProductAdd: FC<FormValues> = () => {
                         <Stack spacing={2} maxWidth={'md'}>
                             <Stack direction={'row'} spacing={2} margin={2}>
                                 <Select 
-                                    name='bcategory'
+                                    name='cat_id'
                                     label='Choose a Category'
                                     options={batteryCategoryOptions}
                                 />
                                 <Textfield
-                                    name='partno'
+                                    name='part_no'
                                     label='Part No'
                                     type='text'
                                 />
                             </Stack>
                             <Stack direction={'row'} spacing={2} margin={2}>
                                 <Textfield
-                                    name='spartno'
+                                    name='short_part_no'
                                     label='Short Part No'
                                     type='text'
                                 />
                                 <Textfield
-                                    name='batteryAh'
+                                    name='ah'
                                     label='Battery AH'
                                     type='text'
                                 />
                             </Stack>
                             <Stack direction={'row'} spacing={2} margin={2}>
                                 <Textfield
-                                    name='dprice'
+                                    name='dlr_price'
                                     label='Dealer Price'
                                     type='text'
                                 />
@@ -141,13 +154,13 @@ const ProductAdd: FC<FormValues> = () => {
                                 />
                             </Stack>
                             <Stack direction={'row'} spacing={2} margin={2}>
-                                <Textfield
-                                    name='year'
-                                    label='Warranty Year'
-                                    type='text'
+                            <Select 
+                                    name='wnty_cat_id'
+                                    label='warranty Year'
+                                    options={warrantyOptions}
                                 />
-                                <Select 
-                                    name='pstatus'
+                            <Select 
+                                    name='p_status'
                                     label='Status'
                                     options={statusOptions}
                                 />

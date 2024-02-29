@@ -30,7 +30,7 @@ app.get('/TopBox', async (req, res) => {
 app.get('/products', async (req, res) => {
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM product_tbl');
+        const result = await client.query('SELECT * FROM product_tbl order by id desc');
         const products = result.rows;
         client.release();
         res.json(products);
@@ -41,14 +41,12 @@ app.get('/products', async (req, res) => {
 
 });
 
-
 // add new product 
 app.post('/product_smit', async (req, res) => {
-    const { id, cat_id, part_no, short_part_no, ah, stock_qty, dlr_price, mrp, wnty_cat_id, p_status } = req.body;
-
+    const {cat_id, part_no, short_part_no, ah, dlr_price, mrp, wnty_cat_id, p_status } = req.body;
     try {
         const client = await pool.connect();
-        const result = await client.query('INSERT INTO product_tbl (id,cat_id, part_no, short_part_no, ah, stock_qty, dlr_price, mrp, wnty_cat_id,p_status) VALUES ($1, $2, $3, $4, $5 ,$6, $7, $8 ,$9,$10)', [id, cat_id, part_no, short_part_no, ah, stock_qty, dlr_price, mrp, wnty_cat_id, p_status]);
+        const result = await client.query('INSERT INTO product_tbl (cat_id, part_no, short_part_no, ah, dlr_price, mrp, wnty_cat_id,p_status) VALUES ($1, $2, $3, $4, $5 ,$6, $7, $8 )', [cat_id, part_no, short_part_no, ah, dlr_price, mrp, wnty_cat_id, p_status]);
         client.release();
         res.status(200).send('Products submitted successfully');
     } catch (error) {
@@ -57,7 +55,6 @@ app.post('/product_smit', async (req, res) => {
         console.log(client.query)
     }
 });
-
 
 
 // DELETE endpoint

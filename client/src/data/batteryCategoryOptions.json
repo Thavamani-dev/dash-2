@@ -1,6 +1,6 @@
 {
-    "2W":"2 Wheeler",
-    "4W":"4 Wheeler",
-    "U":"UPS",
-    "H":"Hubs"
+    "1":"2 Wheeler",
+    "2":"4 Wheeler",
+    "3":"UPS",
+    "4":"Hubs"
 }
