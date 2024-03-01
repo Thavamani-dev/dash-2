@@ -18,21 +18,21 @@ import roleOptions from "../../data/roleOptions.json"
 import bloodOptions from "../../data/bloodOptions.json"
 //Form Values
 interface FormValues{
-    firstname:string;
-    lastname:string;
-    addressLine1:string;
-    addressLine2:string;
-    city:string;
-    state:string;
+    e_firstname:string;
+    e_lastname:string;
+    e_sex:string;
+    e_design:string;
+    e_dob:string;
+    e_doj:string;
     country:string;
     pcode:string | number;
-    email:string;
+    emai5l:string;
     dob:string;
     doj:string;
-    gender:string;
-    role:string;
-    bloodg:string;
-    pwd:string;
+    addressline1:string;
+    addressline2:string;
+    e_blood_group:string;
+    email:string;
     cpwd:string;
     pn:string;
     apn:string;
@@ -41,16 +41,16 @@ interface FormValues{
 
 
 const initialValues : FormValues = {
-    firstname: '',
-    lastname:'',
-    addressLine1:"",
-    addressLine2:"",
-    city:"",
-    state:'',
-    country:"",
-    pcode:'',
-    email:'',
-    dob:"",
+    e_firstname: '',
+    e_lastname:'',
+    e_sex:"",
+    e_design:"",
+    e_dob:"",
+    e_doj:'',
+    addressline1:"",
+    addressline2:"",
+    e_blood_group:'',
+    email:"",
     doj:"",
     gender:"",
     role:'',
@@ -64,45 +64,45 @@ const initialValues : FormValues = {
 const phoneregex = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const validationSchema = Yup.object().shape({
-    firstname:Yup.string()
+    e_firstname:Yup.string()
         .min(4,'Too short')
         .max(20,"Too long")
         .required("First Name Required"),
     
-    lastname:Yup.string()
+    e_lastname:Yup.string()
         .min(4,'Too short')
         .max(20,"Too long")
         .required('Last Name Required'),
 
-    addressLine1: Yup.string()
+    e_sex: Yup.string()
         .required('Address Required'),
     
-    addressLine2: Yup.string(),
-    email:Yup.string()
+    e_design: Yup.string(),
+    e_dob:Yup.string()
         .email("Invalid Email")
         .required("Enter a Email"),
     
-    pn:Yup.string()
+    e_doj:Yup.string()
         .matches(phoneregex, "Phone number is invalid")
         .min(10,"Phone number must be 10 digits")
         .max(10,"Phone number must be 10 digits")
         .required("Phone Number is Required"),
-    apn: Yup.string()
+    addressline1: Yup.string()
         .matches(phoneregex, "Phone number is invalid")
         .min(10,"Phone number must be 10 digits")
         .max(10,"Phone number must be 10 digits"),
-    city:  Yup.string()
+    addressline2:  Yup.string()
         .required('City Required'),
-    state: Yup.string()
+    e_blood_group: Yup.string()
         .required('State Required'),
     country: Yup.string()
         .required('Country Required'),
 
-    dob: Yup.date()
+    e_design: Yup.date()
         .required("Enter Date of Birth"),
-    doj: Yup.date()
+    e_dob: Yup.date()
         .required("Joining Date Required"),
-    gender: Yup.string()
+    e_doj: Yup.string()
         .required("Enter Gender"),
     role: Yup.string()
         .required("Enter Role"),
@@ -176,50 +176,50 @@ const UserAdd :FC<FormValues> = () => {
 
                                 <Stack direction={'row'} spacing={2} margin={2}>
                                     <Textfield 
-                                        name='firstname'
+                                        name='e_firstname'
                                         label='First name'
                                         type='text'
                                     />
                                     <Textfield 
-                                        name='lastname'
+                                        name='e_lastname'
                                         label='Last name'
                                         type='text'
                                     />
                                     <Select 
-                                        name='gender'
+                                        name='e_sex'
                                         label="Gender"
                                         options={genderOptions}
                                     />
                                 </Stack>
                                 <Stack direction={'row'} spacing={2} margin={2}>
                                     <Select 
-                                        name='role'
+                                        name='e_design'
                                         label="Role"
                                         options={roleOptions}
                                     />
                                     <DatePicker 
-                                        name='dob'
+                                        name='e_dob'
                                         label="Date of Birth"
                                     />
                                     <DatePicker 
-                                        name='doj'
+                                        name='e_doj'
                                         label="Date of Joining"
                                     />
                                 </Stack>
                                 <Stack direction={'row'} spacing={2} margin={2}>
                                     <Textfield 
-                                        name='addressLine1'
+                                        name='addressline1'
                                         label='Address Line 1'
                                         type='text'
                                     />
                                     <Textfield 
-                                        name='addressLine2'
+                                        name='addressline2'
                                         label='Address Line 2'
                                         type='text'
                                     />
                                     
                                     <Select 
-                                        name='bloodg'
+                                        name='e_blood_group'
                                         label='Blood Group'
                                         options={bloodOptions}
                                     />

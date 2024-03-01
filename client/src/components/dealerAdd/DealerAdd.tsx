@@ -12,53 +12,53 @@ import { Stack} from '@mui/material';
 import Textfield from '../formsUi/TextField'
 import Select from '../formsUi/Select'
 import ButtonWrapper from '../formsUi/Button'
+import axios from 'axios';
 
 interface FormValues{
-    dname:string;
-    dsCategory:string;
-    address1:string;
-    address2:string;
-    pno:string;
-    apno:string;
-    area:string;
-    pcode:string;
+    dlr_name:string;
+    shop_cat:string;
+    addressline1:string;
+    addressline2:string;
+    city:string;
+    postal_code:string;
+    contact_number:string;
+    alternate_number:string;
 }
 
 const initialValues:FormValues ={
-    dname:"",
-    dsCategory:"",
-    address1:"",
-    address2:"",
-    pno:"",
-    apno:"",
-    area:"",
-    pcode:"",
+    dlr_name:"",
+    shop_cat:"",
+    addressline1:"",
+    addressline2:"",
+    city:"",
+    postal_code:"",
+    contact_number:"",
+    alternate_number:"",
 }
 
 const phoneregex = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const validationSchema = Yup.object().shape({
-    dname:Yup.string()
+    dlr_name:Yup.string()
         .min(4,'Too short')
         .max(20,"Too long")
         .required("Dealer Name Repuired"),
-    dsCategory:Yup.string()
-        .min(4,'Too short')
-        .max(20,"Too long")
+    shop_cat:Yup.string()
+       
         .required("Category Required"),
-    address1: Yup.string()
+    addressline1: Yup.string()
         .required("Address Required"),
-    address2 : Yup.string(),
-    area: Yup.string()
+    addressline2 : Yup.string(),
+    city: Yup.string()
         .required("Area Required"),
-    pcode: Yup.string()
+    postal_code: Yup.string()
         .required("Postal Code Required"),
-    pno:Yup.string()
+    contact_number:Yup.string()
         .matches(phoneregex, "Phone number is invalid")
         .min(10,"Must be over 10 digits")
         .max(10,"Must be under 10 digits")
         .required("Phone Number is Required"),
-    apno: Yup.string()
+    alternate_number: Yup.string()
         .matches(phoneregex, "Phone number is invalid")
         .min(10,"Must be over 10 digits")
         .max(10,"Must be under 10 digits"),
@@ -68,7 +68,7 @@ const validationSchema = Yup.object().shape({
 
 const DealerAdd: FC<FormValues> = () => {
     const [open, setOpen] = React.useState<boolean>(false);
-    
+    const [user,setUser] =  useState(initialValues);
   return (
     <React.Fragment>
         <Button variant="solid" color="primary" onClick={() => setOpen(true)}style={{width:150}} startDecorator={<Add />}>
@@ -107,8 +107,19 @@ const DealerAdd: FC<FormValues> = () => {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={values => {
-                        console.log(JSON.stringify(values));
+                    onSubmit={ async values => {
+
+                        try {
+                            await axios.post('http://localhost:5172/dealer_smit', values);
+                            console.log('Form submitted successfully');
+                            window.location.href="/dealer";
+                        } catch (error) {
+                            console.error('Error submitting form', error);
+                            console.error({values});
+                        }
+                     
+                       setUser(initialValues);
+                        // console.log(JSON.stringify(values))
                     }}
                 
                 >
@@ -116,48 +127,48 @@ const DealerAdd: FC<FormValues> = () => {
                         <Stack spacing={2} maxWidth={'md'}>
                             <Stack  direction={'row'} spacing={2} margin={2}>
                                 <Textfield
-                                    name='dname'
+                                    name='dlr_name'
                                     label='Dealer Name'
                                     type='text'
                                 />
                                 <Textfield
-                                    name='dsCategory'
+                                    name='shop_cat'
                                     label='Shop Category'
                                     type='text'
                                 />
                             </Stack>
                             <Stack  direction={'row'} spacing={2} margin={2}>
                                 <Textfield
-                                    name='address1'
+                                    name='addressline1'
                                     label='Address Line 1'
                                     type='text'
                                 />
                                 <Textfield
-                                    name='address2'
+                                    name='addressline2'
                                     label='Address Line 2'
                                     type='text'
                                 />
                             </Stack>
                             <Stack  direction={'row'} spacing={2} margin={2}>
                                 <Textfield
-                                    name='area'
+                                    name='city'
                                     label='Area'
                                     type='text'
                                 />
                                 <Textfield
-                                    name='pcode'
+                                    name='postal_code'
                                     label='Postal Code'
                                     type='text'
                                 />
                             </Stack>
                             <Stack  direction={'row'} spacing={2} margin={2}>
                                 <Textfield
-                                    name='pno'
+                                    name='contact_number'
                                     label='Phone No'
                                     type='text'
                                 />
                                 <Textfield
-                                    name='apno'
+                                    name='alternate_number'
                                     label='Alt Phone No'
                                     type='text'
                                 />

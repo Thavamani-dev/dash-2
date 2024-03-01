@@ -77,7 +77,7 @@ const Products = () => {
     <div className="products">
       <div className="info">
         <h1>Products</h1>
-        <ProductAdd />
+        <ProductAdd cat_id={""} part_no={""} short_part_no={""} ah={""} dlr_price={""} mrp={""} wnty_cat_id={""} p_status={""} />
       </div>
       <DataTable slug = 'products' columns={columns} rows={test}/>
     </div>

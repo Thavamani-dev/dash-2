@@ -56,11 +56,9 @@ app.post('/product_smit', async (req, res) => {
     }
 });
 
-
 // DELETE endpoint
 app.delete('/productdlt/:id', async (req, res) => {
     const pid = req.params.pid;
-
     try {
         const client = await pool.connect();
         await client.query('DELETE FROM product_tbl WHERE id = $1', [pid]);
@@ -125,7 +123,7 @@ app.get('/orders', async (req, res) => {
 app.get('/dealers', async (req, res) => {
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM dealer_tbl');
+        const result = await client.query('SELECT * FROM dealer_tbl order by id desc');
 
         const products = result.rows;
         client.release();
@@ -137,6 +135,21 @@ app.get('/dealers', async (req, res) => {
 
 });
 
+
+// add new dealer 
+app.post('/dealer_smit', async (req, res) => {
+    const {dlr_name, shop_cat, addressline1, addressline2, area_no, postal_code, contact_num, alt_num } = req.body;
+    try {
+        const client = await pool.connect();
+        const result = await client.query('INSERT INTO dealer_tbl (dlr_name, shop_cat, addressline1, addressline2, area_no, postal_code, contact_num,alt_num) VALUES ($1, $2, $3, $4, $5 ,$6, $7, $8 )', [dlr_name, shop_cat, addressline1, addressline2, area_no, postal_code, contact_num, alt_num]);
+        client.release();
+        res.status(200).send('Products submitted successfully');
+    } catch (error) {
+        console.error('Error executing query', error);
+        res.status(500).send('Products not submitted');
+        console.log(client.query)
+    }
+});
 
 //port is run //
 app.listen(PORT, () => {

@@ -62,7 +62,8 @@ wnty_cat_id: Yup.string()
 const ProductAdd: FC<FormValues> = () => {
     const [open, setOpen] = useState<boolean>(false);
      const [user,setUser] =  useState(initialValues);
-    return (
+   
+     return (
         <React.Fragment>
         <Button variant="solid" color="primary" onClick={() => setOpen(true)}style={{width:150}} startDecorator={<Add />}>
         Add Product
@@ -97,17 +98,21 @@ const ProductAdd: FC<FormValues> = () => {
                 >
                     Add New Product
                 </Typography>
+                
                 <Formik 
                     initialValues={initialValues}
                     onSubmit={ async values => {
 
+
                         try {
                             await axios.post('http://localhost:5172/product_smit', values);
-                            console.log('Form submitted successfully');
-                             
+                            console.log('product submitted successfully');
+                             window.location.href="/products";
                         } catch (error) {
                             console.error('Error submitting form', error);
                             console.error({values});
+                            alert("Product submitted successfully");
+
                         }
                      
                        setUser(initialValues);
